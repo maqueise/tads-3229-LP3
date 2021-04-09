@@ -1,6 +1,7 @@
-
 const apiData = document.querySelector('.api-data')
 const spinner = document.querySelector('.spinner-grow')
+const genreFilter = document.querySelector('.genre-filter')
+
 spinner.style.display="none"
 async function getMovies(){
     const url = "http://localhost:3000/movies"
@@ -29,8 +30,9 @@ async function getMovies(){
 async function search(query){
     const url =  `http://localhost:3000/movies?q=${query}`
    
-    
+    spinner.style.display="block"
     const response = await axios.get(url);
+    spinner.style.display="none"
     const movieList = Array.from(response.data)
     apiData.innerHTML=""
     movieList.forEach(function(movie){
@@ -50,12 +52,25 @@ async function search(query){
           `
     })
 }
+async function getGenres(){
+    const url =`http://localhost:3000/genres`
+    const response = await axios.get(url)
+    const genreList = Array.from(response.data)
+    genreList.forEach(function(genre){
+        genreFilter.innerHTML+=`<option value="${genre.description}">${genre.description}</option>`
+    })
+
+}
 const btnBuscar = document.querySelector('.btn-buscar')
 const inputSearch = document.querySelector('input[type=search]')
 btnBuscar.addEventListener('click',function(){
     search(inputSearch.value)
 })
+genreFilter.addEventListener('change',function(){
+    search(genreFilter.value)
+})
 getMovies()
+getGenres()
 
 
 

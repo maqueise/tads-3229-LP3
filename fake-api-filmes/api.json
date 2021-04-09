@@ -1,4 +1,53 @@
 {
+  "genres":[
+    {
+      "id":1,
+      "description":"Ação"
+    },
+    {
+      "id":2,
+      "description":"Aventura"
+    },
+    {
+      "id":3,
+      "description":"Comédia"
+    },
+    {
+      "id":4,
+      "description":"Documentário"
+    },
+    {
+      "id":5,
+      "description":"Drama"
+    },
+    {
+      "id":6,
+      "description":"Fantasia"
+    },
+    {
+      "id":7,
+      "description":"Ficção Ciêntifica"
+    },
+    {
+      "id":8,
+      "description":"Romance"
+    },
+    {
+      "id":9,
+      "description":"Suspense"
+    },
+    {
+      "id":10,
+      "description":"Terror"
+    },
+    {
+      "id":11,
+      "description":"Thriller"
+    }
+
+
+  ],
+
   "movies": [
     {
       "id": 1,
