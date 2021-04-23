@@ -1,14 +1,20 @@
+import  getData  from "./api.js";
+
 const apiData = document.querySelector('.api-data')
 const spinner = document.querySelector('.spinner-grow')
 const genreFilter = document.querySelector('.genre-filter')
 
-spinner.style.display="none"
-async function getMovies(){
-    const url = "http://localhost:3000/movies"
-    spinner.style.display="block"
-    const response = await axios.get(url)
-    spinner.style.display="none"
-    const movieList = Array.from(response.data)
+showSpinner(false)
+
+function showSpinner(isShow=false){
+    if(isShow){
+        spinner.style.display="block"
+        return
+    }
+        spinner.style.display="none" 
+}
+
+function renderCards(movieList){
     movieList.forEach(async function(movie){
         apiData.innerHTML+=`
             <div class="card m-2" style="width:220px">
@@ -24,42 +30,31 @@ async function getMovies(){
                 </section>
             </div>
         `
-    })   
+    }) 
+
+}
+async function getMovies(){
+    showSpinner(true)
+    const response = await getData('movies')
+    showSpinner(false)
+    const movieList = Array.from(response.data)
+    renderCards(movieList) 
 }
 
 async function search(query){
-    const url =  `http://localhost:3000/movies?q=${query}`
-   
-    spinner.style.display="block"
-    const response = await axios.get(url);
-    spinner.style.display="none"
+    showSpinner(true)
+    const response = await getData(`movies?q=${query}`)
+    showSpinner(false)
     const movieList = Array.from(response.data)
     apiData.innerHTML=""
-    movieList.forEach(function(movie){
-        apiData.innerHTML+=`
-            <div class="card m-2" style="width:220px">
-               <img src="${movie.poster}">
-                <section class="card-body">
-                    <h5 class="card-title">${movie.title}</h5>
-                    <p>
-                        Ano: ${movie.year}
-                    </p>
-                    <p>
-                        Genero: ${movie.genre}
-                    </p>
-                </section>
-            </div>
-          `
-    })
+    renderCards(movieList)
 }
 async function getGenres(){
-    const url =`http://localhost:3000/genres`
-    const response = await axios.get(url)
+    const response = await getData('genre')
     const genreList = Array.from(response.data)
     genreList.forEach(function(genre){
         genreFilter.innerHTML+=`<option value="${genre.description}">${genre.description}</option>`
     })
-
 }
 const btnBuscar = document.querySelector('.btn-buscar')
 const inputSearch = document.querySelector('input[type=search]')
